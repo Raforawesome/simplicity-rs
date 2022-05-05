@@ -1,8 +1,6 @@
 #![allow(unused_variables, dead_code)]
 use std::future::Future;
-use std::pin::Pin;
 use std::task::Poll;
-use pollster::FutureExt;
 use serenity::futures::TryFutureExt;
 use super::prelude::*;
 
@@ -13,8 +11,12 @@ pub const CMD: Command = Command {
 	execute
 };
 
-type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
-pub fn execute(ctx: Context, msg: Message, args: &[String]) -> std::pin::Pin<Ret> {
+// type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
+type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;
+pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
+	Box::pin(execute_wrap(ctx, msg, args))
+}
+pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 	let res = msg.channel_id.send_message(
 		ctx.http,
 		|m| {
@@ -22,6 +24,5 @@ pub fn execute(ctx: Context, msg: Message, args: &[String]) -> std::pin::Pin<Ret
 				e.description("Test.")
 			})
 		}
-	);
-	Box::pin(res)
+	).await;
 }

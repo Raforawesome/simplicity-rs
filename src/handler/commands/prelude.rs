@@ -3,6 +3,7 @@ pub use serenity::prelude::*;
 pub use serenity::async_trait;
 pub use serenity::model::{self, gateway::Ready};
 pub use model::channel::Message;
+pub use std::pin::Pin;
 
 use std::future::Future;
 
@@ -10,12 +11,13 @@ use std::future::Future;
 // 	fn execute(args: &[&str]) {}
 // }
 
-type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
+// type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
+type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;
 pub struct Command {
 	pub command: &'static str,
 	// pub aliases: &'static [&'static str],
 	pub self_allowed: bool,
-	pub execute: fn(Context, Message, &[String]) -> std::pin::Pin<Ret>
+	pub execute: fn(Context, Message, Vec<String>) -> Ret
 }
 
 // impl<T> Command<T> {
