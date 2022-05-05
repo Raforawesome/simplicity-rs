@@ -8,6 +8,8 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.18.0", features = ['rt-multi-thread'] }
 serenity = { version = "0.11.1", default-features = false, features = ["client", "gateway", "model", "rustls_backend"] }
+pollster = "0.2.5"
+phf = { version = "0.10.1", features = ["macros"] }
 
 [profile.release]
 strip = true

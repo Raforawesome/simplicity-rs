@@ -11,7 +11,7 @@ async fn main() {
 
     let mut Client = Client::builder(
         token,
-        GatewayIntents::default()
+        GatewayIntents::all()
     ).event_handler(Handler).await.unwrap();
 
     if let Err(reason) = Client.start().await {
