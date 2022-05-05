@@ -1,12 +1,10 @@
 #![allow(unused_variables, dead_code)]
 use std::future::Future;
-use std::task::Poll;
 use serenity::futures::TryFutureExt;
 use super::prelude::*;
-use super::utils;
 
 pub const CMD: Command = Command {
-	command: "targettest",
+	command: "invite",
 	// aliases: &["testcmd"],
 	self_allowed: false,
 	execute
@@ -17,40 +15,13 @@ type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;
 pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
 	Box::pin(execute_wrap(ctx, msg, args))
 }
-
 pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
-	let mut me: String = String::new();
-	if msg.mentions.is_empty() && args.is_empty() {
-		me = "Not enough arguments specified!".to_string();
-		let res = msg.channel_id.send_message(
-			ctx.http,
-			|m| {
-				m.embed(|e| {
-					e.description(me)
-				})
-			}
-		).await;
-		return;
-	}
-	let target = tokio::task::spawn(utils::get_targets(
-		ctx.clone(),
-		msg.mentions.clone(),
-		args[0].to_owned(),
-		msg.guild_id
-	)).await.unwrap();
-
-	if let Some(b) = target {
-		let u = *b;
-		me = format!("Found user {:?}", u);
-	} else {
-		me = "No user found.".to_string();
-	}
-
 	let res = msg.channel_id.send_message(
 		ctx.http,
 		|m| {
 			m.embed(|e| {
-				e.description(me)
+				e.description("[Invite link here](https://discord.com/oauth2/authorize?client_id=971559446062964826&permissions=8&scope=bot)")
+					.color((0, 200, 0))
 			})
 		}
 	).await;
