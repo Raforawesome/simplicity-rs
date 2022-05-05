@@ -15,7 +15,6 @@ pub struct Handler;
 #[async_trait]
 impl EventHandler for Handler {
 	async fn message(&self, ctx: Context, msg: Message) {
-		println!("{}", &msg.content);
 		if msg.content.starts_with(PREFIX) {
 			let mut args = msg.content.split(' ')
 				.map(|s| s.to_string())
