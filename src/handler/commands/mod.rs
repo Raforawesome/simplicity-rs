@@ -1,5 +1,6 @@
+#![allow(dead_code)]
 mod prelude;
-pub const command_list: [&str] = *[
+pub const COMMAND_LIST: [&str; 1] = [
 	"test"
 ];
 pub mod test;

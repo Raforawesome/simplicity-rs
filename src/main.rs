@@ -6,7 +6,8 @@ const TOKEN: &str = "";
 
 #[tokio::main]
 async fn main() {
-    let token = std::fs::read_to_string("SECRET").unwrap();
+    let mut token = std::fs::read_to_string("SECRET").unwrap();
+    token = token.trim().to_string();
 
     let mut Client = Client::builder(
         token,
