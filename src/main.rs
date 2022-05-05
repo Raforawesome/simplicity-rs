@@ -6,6 +6,7 @@ use serenity::prelude::*;
 
 #[tokio::main]
 async fn main() {
+    // let rt = tokio::runtime::Builder::new_current_thread().build().unwrap();
     let mut token = std::fs::read_to_string("SECRET").unwrap();
     token = token.trim().to_string();
 
