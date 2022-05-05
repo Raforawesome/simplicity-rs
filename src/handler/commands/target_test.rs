@@ -44,5 +44,5 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 				e.description(me)
 			})
 		}
-	);
+	).await;
 }
