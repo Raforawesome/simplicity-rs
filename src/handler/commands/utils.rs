@@ -1,10 +1,37 @@
 use super::prelude::*;
-use serenity::model::user::User;
+use serenity::model::{
+	user::User,
+	id::GuildId,
+	guild::Member
+};
 
-fn get_targets<'a>(mentions: &'a [User], arg: &str) -> Option<&'a User> {
+async fn get_targets(ctx: &Context, mentions: &[User], arg: &str, g_id: Option<GuildId>) -> Option<Box<User>> {
 	if !mentions.is_empty() {
-		return Some(&mentions[0]);
+		return Some(Box::new(mentions[0].clone()));
 	}
-	let r: Option<&'a User> = None;
-	todo!()
+	let mut r: Option<Box<User>> = None;
+	if let Some(gid) = g_id {
+		let members_res = gid.members(
+			&(ctx.http),
+			None,
+			None
+		).await;
+		if let Ok(members) = members_res {
+			for member in members {
+				if let Some(nick) = member.nick {
+					if nick.contains(arg) {
+						r = Some(Box::new(member.user));
+						break;
+					}
+				}
+				if member.user.name.contains(arg) {
+					r = Some(Box::new(member.user));
+					break;
+				}
+			}
+		} else {
+			eprintln!("WARNING: An error occurred in fetching guild members.");
+		}
+	}
+	r
 }

@@ -1,5 +1,7 @@
 #![allow(unused_variables, dead_code)]
 use std::future::Future;
+use std::pin::Pin;
+use std::task::Poll;
 use pollster::FutureExt;
 use serenity::futures::TryFutureExt;
 use super::prelude::*;
