@@ -42,7 +42,7 @@ impl EventHandler for Handler {
 						ctx.http,
 						|m| {
 							m.embed(|e| {
-								e.description(format!("Invalid command!  Did you mean {}?", similar))
+								e.description(format!("Invalid command!  Did you mean `${}`?", similar))
 									.color((255, 0, 0))
 							})
 						}
