@@ -24,7 +24,7 @@ impl EventHandler for Handler {
 			command.remove(0);
 
 			if let Some(f) =  COMMANDS.get(command.as_str()) {
-				f(&ctx, &msg, &args);
+				let r = f(ctx, &msg, &args);
 			}
 		}
 	}

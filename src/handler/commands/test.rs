@@ -1,9 +1,10 @@
-#![allow(unused_imports, unused_variables, dead_code)]
-
+#![allow(unused_variables, dead_code)]
 use std::future::Future;
 use pollster::FutureExt;
 use serenity::futures::TryFutureExt;
 use super::prelude::*;
+
+use std::pin::Pin;
 
 pub const cmd: Command = Command {
 	command: "test",
@@ -12,15 +13,12 @@ pub const cmd: Command = Command {
 	execute
 };
 
-pub fn execute(ctx: &Context, msg: &Message, args: &[String]) {
+type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>>>;
+pub fn execute(ctx: Context, msg: &Message, args: &[String]) -> Ret {
 	println!("Sending message");
 	let res = msg.channel_id.say(
-		&ctx.http,
+		ctx.http,
 		"test"
-	).block_on();
-	if let Err(e) = res {
-		println!("Error in sending message: {}", e);
-	} else if let Ok(s) = res {
-		println!("Sent {}", s.content);
-	}
+	);
+	Box::new(res)
 }
