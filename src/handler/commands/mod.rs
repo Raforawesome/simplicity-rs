@@ -11,8 +11,8 @@ use phf::phf_map;
 pub mod test;
 mod prelude;
 
-type Ret = Box<dyn std::future::Future<Output = Result<Message, serenity::Error>>>;
-type cmdfn = fn(Context, &Message, &[String]) -> Ret;
+type Ret = Box<dyn std::future::Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
+type cmdfn = fn(Context, &Message, &[String]) -> std::pin::Pin<Ret>;
 pub static COMMANDS: phf::Map<&str, cmdfn> = phf_map! {
     "test" => test::cmd.execute,
 };

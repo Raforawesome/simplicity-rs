@@ -11,9 +11,8 @@ pub const cmd: Command = Command {
 	execute
 };
 
-type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>>>;
-pub fn execute(ctx: Context, msg: &Message, args: &[String]) -> Ret {
-	// println!("Sending message");
+type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
+pub fn execute(ctx: Context, msg: &Message, args: &[String]) -> std::pin::Pin<Ret> {
 	let res = msg.channel_id.send_message(
 		ctx.http,
 		|m| {
@@ -22,5 +21,5 @@ pub fn execute(ctx: Context, msg: &Message, args: &[String]) -> Ret {
 			})
 		}
 	);
-	Box::new(res)
+	Box::pin(res)
 }
