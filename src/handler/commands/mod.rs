@@ -10,6 +10,7 @@ use phf::phf_map;
 
 pub mod test;
 mod prelude;
+mod utils;
 
 type Ret = Box<dyn std::future::Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
 type cmdfn = fn(Context, &Message, &[String]) -> std::pin::Pin<Ret>;
