@@ -5,7 +5,7 @@ use serenity::model::{
 	guild::Member
 };
 
-async fn get_targets(ctx: &Context, mentions: &[User], arg: &str, g_id: Option<GuildId>) -> Option<Box<User>> {
+pub async fn get_targets(ctx: Context, mentions: Vec<User>, arg: String, g_id: Option<GuildId>) -> Option<Box<User>> {
 	if !mentions.is_empty() {
 		return Some(Box::new(mentions[0].clone()));
 	}
@@ -19,12 +19,12 @@ async fn get_targets(ctx: &Context, mentions: &[User], arg: &str, g_id: Option<G
 		if let Ok(members) = members_res {
 			for member in members {
 				if let Some(nick) = member.nick {
-					if nick.contains(arg) {
+					if nick.contains(&arg) {
 						r = Some(Box::new(member.user));
 						break;
 					}
 				}
-				if member.user.name.contains(arg) {
+				if member.user.name.contains(&arg) {
 					r = Some(Box::new(member.user));
 					break;
 				}

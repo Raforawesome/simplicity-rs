@@ -23,7 +23,7 @@ impl EventHandler for Handler {
 			command.remove(0);
 
 			if let Some(f) =  COMMANDS.get(command.as_str()) {
-				let _ = f(ctx, &msg, &args).await;
+				let _ = f(ctx, msg, &args).await;
 				// tokio::task::spawn(f(ctx, &msg, &args));
 			}
 		}

@@ -15,7 +15,7 @@ pub struct Command {
 	pub command: &'static str,
 	// pub aliases: &'static [&'static str],
 	pub self_allowed: bool,
-	pub execute: fn(Context, &Message, &[String]) -> std::pin::Pin<Ret>
+	pub execute: fn(Context, Message, &[String]) -> std::pin::Pin<Ret>
 }
 
 // impl<T> Command<T> {
