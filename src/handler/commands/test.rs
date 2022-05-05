@@ -12,12 +12,15 @@ pub const cmd: Command = Command {
 };
 
 type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>>>;
-#[tokio::main]
-pub async fn execute(ctx: Context, msg: &Message, args: &[String]) -> Ret {
-	println!("Sending message");
-	let res = msg.channel_id.say(
+pub fn execute(ctx: Context, msg: &Message, args: &[String]) -> Ret {
+	// println!("Sending message");
+	let res = msg.channel_id.send_message(
 		ctx.http,
-		"test"
+		|m| {
+			m.embed(|e| {
+				e.description("Test.")
+			})
+		}
 	);
 	Box::new(res)
 }
