@@ -2,7 +2,8 @@ use super::prelude::*;
 use serenity::model::{
 	user::User,
 	id::GuildId,
-	guild::Member
+	guild::Member,
+	channel::Message,
 };
 
 pub async fn get_targets(ctx: Context, mentions: Vec<User>, arg: String, g_id: Option<GuildId>) -> Option<Box<User>> {
@@ -34,4 +35,16 @@ pub async fn get_targets(ctx: Context, mentions: Vec<User>, arg: String, g_id: O
 		}
 	}
 	r
+}
+
+pub async fn send_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: (u8, u8, u8)) {
+	let _ = &msg.channel_id.send_message(
+		&ctx.http,
+		|m| {
+			m.embed(|e| {
+				e.description(s)
+					.color(color)
+			})
+		}
+	).await;
 }
