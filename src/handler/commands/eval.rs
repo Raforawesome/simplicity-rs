@@ -29,7 +29,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		body_temp.push(' ');
 	}
 	if !body_temp.contains("```") {
-		send_embed("ERROR: Put your code in a code block.", &msg, &ctx, (255, 0, 0)).await;
+		send_embed("Put your code in a code block.", &msg, &ctx, (255, 0, 0)).await;
 		return;
 	}
 
