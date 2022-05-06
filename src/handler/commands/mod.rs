@@ -15,7 +15,7 @@ use phf::phf_map;
 mod test;
 mod target_test;
 mod invite;
-// mod eight_ball;
+mod eight_ball;
 mod eval;
 mod eval_support;
 //////////////
@@ -29,7 +29,7 @@ pub static COMMANDS: phf::Map<&str, cmdfn> = phf_map! {
     "test" => test::CMD.execute, "testcmd" => test::CMD.execute,
     "targettest" => target_test::CMD.execute,
     "invite" => invite::CMD.execute,
-    // "8ball" => eight_ball::CMD.execute
+    "8ball" => eight_ball::CMD.execute,
     "eval" => eval::CMD.execute,
     "evalsupport" => eval_support::CMD.execute,
 };
