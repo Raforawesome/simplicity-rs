@@ -62,7 +62,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 
 		send_embed(format!("Lua output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
 
-	} else if mode == "python" {
+	} else if mode == "python" || mode == "py" {
 		let mut file = fs::File::create("temp.py").unwrap();
 		let _ = file.write_all(body.as_bytes());
 
