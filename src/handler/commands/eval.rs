@@ -127,6 +127,43 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 			})
 		}).await;
 
+	}else if mode == "c++" || mode == "cpp" {
+		let mut file = fs::File::create("temp.cpp").unwrap();
+		let _ = file.write_all(body.as_bytes());
+
+
+		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
+
+		let status = process::Command::new("g++")
+			.arg("temp.cpp")
+			.status().unwrap();
+
+		if !status.success() {
+			let _ = m.edit(ctx.http, |m| {
+				m.embed(|e| {
+					e.description(format!("Compiler exited with error `{}`", status))
+						.color((255, 0, 0))
+				})
+			}).await;
+			return;
+		}
+
+
+		let output = process::Command::new("./a.out")
+			.output().unwrap();
+		let stdout_bytes = output.stdout;
+		let stdout_string: String = String::from_utf8(stdout_bytes).unwrap();
+
+		let _ = fs::remove_file(PathBuf::from("./temp.cpp"));
+		let _ = fs::remove_file(PathBuf::from("./a.out"));
+
+		let _ = m.edit(ctx.http, |m| {
+			m.embed(|e| {
+				e.description(format!("Compiled C++ output:\n```\n{}\n```", stdout_string))
+					.color((0, 255, 0))
+			})
+		}).await;
+
 	} else if mode == "rust" || mode == "Rust" || mode == "rs" {
 		let mut file = fs::File::create("temp.rs").unwrap();
 		let _ = file.write_all(body.as_bytes());
@@ -134,7 +171,9 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 
 		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
 
-		let status = process::Command::new("rustc -C opt-level=3")
+		let status = process::Command::new("rustc")
+			.arg("-C")
+			.arg("opt-level=3")
 			.arg("temp.rs")
 			.status().unwrap();
 
