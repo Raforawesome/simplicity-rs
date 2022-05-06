@@ -94,10 +94,24 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let mut file = fs::File::create("temp.c").unwrap();
 		let _ = file.write_all(body.as_bytes());
 
+
 		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
-		let _ = process::Command::new("gcc")
+
+		let status = process::Command::new("gcc")
 			.arg("temp.c")
-			.output();
+			.status().unwrap();
+
+		if !status.success() {
+			let _ = m.edit(ctx.http, |m| {
+				m.embed(|e| {
+					e.description(format!("Compiler exited with error `{}`", status))
+						.color((255, 0, 0))
+				})
+			}).await;
+			return;
+		}
+
+
 		let output = process::Command::new("./a.out")
 			.output().unwrap();
 		let stdout_bytes = output.stdout;
@@ -112,7 +126,44 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 					.color((0, 255, 0))
 			})
 		}).await;
-		// send_embed(format!("Compiled C output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
+
+	} else if mode == "rust" || mode == "Rust" || mode == "rs" {
+		let mut file = fs::File::create("temp.rs").unwrap();
+		let _ = file.write_all(body.as_bytes());
+
+
+		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
+
+		let status = process::Command::new("rustc")
+			.arg("temp.rs")
+			.arg("--release")
+			.status().unwrap();
+
+		if !status.success() {
+			let _ = m.edit(ctx.http, |m| {
+				m.embed(|e| {
+					e.description(format!("Compiler exited with error `{}`", status))
+						.color((255, 0, 0))
+				})
+			}).await;
+			return;
+		}
+
+
+		let output = process::Command::new("./temp")
+			.output().unwrap();
+		let stdout_bytes = output.stdout;
+		let stdout_string: String = String::from_utf8(stdout_bytes).unwrap();
+
+		let _ = fs::remove_file(PathBuf::from("./temp"));
+		let _ = fs::remove_file(PathBuf::from("./temp.rs"));
+
+		let _ = m.edit(ctx.http, |m| {
+			m.embed(|e| {
+				e.description(format!("Compiled Rust output:\n```\n{}\n```", stdout_string))
+					.color((0, 255, 0))
+			})
+		}).await;
 
 	} else {
 		send_embed("ERROR: Invalid language!", &msg, &ctx, (255, 0, 0)).await;
