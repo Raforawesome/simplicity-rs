@@ -127,7 +127,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 			})
 		}).await;
 
-	}else if mode == "c++" || mode == "cpp" {
+	} else if mode == "c++" || mode == "cpp" {
 		let mut file = fs::File::create("temp.cpp").unwrap();
 		let _ = file.write_all(body.as_bytes());
 
