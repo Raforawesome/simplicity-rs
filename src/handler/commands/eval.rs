@@ -1,7 +1,7 @@
 use std::future::Future;
 use serenity::futures::TryFutureExt;
 use super::prelude::*;
-use super::utils::{send_embed};
+use super::utils::{send_embed, get_embed};
 use std::fs;
 use std::io::Write;
 use std::path::PathBuf;
@@ -61,6 +61,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let _ = fs::remove_file(PathBuf::from("./temp.lua"));
 
 		send_embed(format!("Lua output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
+
 	} else if mode == "python" {
 		let mut file = fs::File::create("temp.py").unwrap();
 		let _ = file.write_all(body.as_bytes());
@@ -74,6 +75,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let _ = fs::remove_file(PathBuf::from("./temp.py"));
 
 		send_embed(format!("Python output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
+
 	} else if mode == "js" {
 		let mut file = fs::File::create("temp.js").unwrap();
 		let _ = file.write_all(body.as_bytes());
@@ -87,6 +89,31 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let _ = fs::remove_file(PathBuf::from("./temp.js"));
 
 		send_embed(format!("Node.JS output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
+
+	} else if mode == "c" {
+		let mut file = fs::File::create("temp.c").unwrap();
+		let _ = file.write_all(body.as_bytes());
+
+		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
+		let _ = process::Command::new("gcc")
+			.arg("temp.c")
+			.output();
+		let output = process::Command::new("./a.out")
+			.output().unwrap();
+		let stdout_bytes = output.stdout;
+		let stdout_string: String = String::from_utf8(stdout_bytes).unwrap();
+
+		let _ = fs::remove_file(PathBuf::from("./temp.c"));
+		let _ = fs::remove_file(PathBuf::from("./a.out"));
+
+		let _ = m.edit(ctx.http, |m| {
+			m.embed(|e| {
+				e.description(format!("Compiled C output:\n```\n{}\n```", stdout_string))
+					.color((0, 255, 0))
+			})
+		}).await;
+		// send_embed(format!("Compiled C output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
+
 	} else {
 		send_embed("ERROR: Invalid language!", &msg, &ctx, (255, 0, 0)).await;
 	}

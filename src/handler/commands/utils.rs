@@ -1,4 +1,5 @@
 use super::prelude::*;
+use serenity::builder::{self, CreateEmbed};
 use serenity::model::{
 	user::User,
 	id::GuildId,
@@ -37,8 +38,8 @@ pub async fn get_targets(ctx: Context, mentions: Vec<User>, arg: String, g_id: O
 	r
 }
 
-pub async fn send_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: (u8, u8, u8)) {
-	let _ = &msg.channel_id.send_message(
+pub async fn send_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: (u8, u8, u8)) -> Message {
+	let m = msg.channel_id.send_message(
 		&ctx.http,
 		|m| {
 			m.embed(|e| {
@@ -47,4 +48,12 @@ pub async fn send_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: 
 			})
 		}
 	).await;
+	m.unwrap()
+}
+
+pub async fn get_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: (u8, u8, u8)) -> CreateEmbed {
+	let mut e = builder::CreateEmbed::default();
+	e.description(s);
+	e.color(color);
+	e
 }
