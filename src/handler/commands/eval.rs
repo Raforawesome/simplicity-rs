@@ -76,7 +76,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 
 		send_embed(format!("Python output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
 
-	} else if mode == "js" {
+	} else if mode == "js" || mode == "javascript" || mode == "nodejs" {
 		let mut file = fs::File::create("temp.js").unwrap();
 		let _ = file.write_all(body.as_bytes());
 
@@ -90,7 +90,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 
 		send_embed(format!("Node.JS output:\n```\n{}\n```", stdout_string), &msg, &ctx, (0, 255, 0)).await;
 
-	} else if mode == "c" {
+	} else if mode == "c" || mode == "C" {
 		let mut file = fs::File::create("temp.c").unwrap();
 		let _ = file.write_all(body.as_bytes());
 
