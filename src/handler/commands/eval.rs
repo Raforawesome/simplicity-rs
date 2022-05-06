@@ -135,8 +135,8 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
 
 		let status = process::Command::new("rustc")
-			.arg("temp.rs")
-			.arg("--release")
+			.arg("-C opt-level=3")
+			.arg("main.rs")
 			.status().unwrap();
 
 		if !status.success() {

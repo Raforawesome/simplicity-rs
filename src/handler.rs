@@ -9,7 +9,7 @@ use model::channel::Message;
 
 use commands::COMMANDS;
 
-const PREFIX: &str = "&";
+const PREFIX: &str = "$";
 
 pub struct Handler;
 
