@@ -7,7 +7,7 @@ use serenity::model::{
 	channel::Message,
 };
 
-pub async fn get_targets(ctx: Context, mentions: Vec<User>, arg: String, g_id: Option<GuildId>) -> Option<Box<User>> {
+pub async fn get_targets(ctx: &Context, mentions: Vec<User>, arg: String, g_id: Option<GuildId>) -> Option<Box<User>> {
 	if !mentions.is_empty() {
 		return Some(Box::new(mentions[0].clone()));
 	}

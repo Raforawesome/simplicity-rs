@@ -32,12 +32,12 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		).await;
 		return;
 	}
-	let target = tokio::task::spawn(utils::get_targets(
-		ctx.clone(),
+	let target = utils::get_targets(
+		&ctx,
 		msg.mentions.clone(),
 		args[0].to_owned(),
 		msg.guild_id
-	)).await.unwrap();
+	).await;
 
 	if let Some(b) = target {
 		let u = *b;
