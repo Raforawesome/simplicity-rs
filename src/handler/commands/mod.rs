@@ -22,6 +22,7 @@ mod avatar;
 mod ban;
 mod coinflip;
 mod purge;
+mod unban;
 //////////////
 
 
@@ -40,4 +41,5 @@ pub static COMMANDS: phf::Map<&str, Cmdfn> = phf_map! {
     "ban" => ban::CMD.execute,
     "coinflip" => coinflip::CMD.execute, "cf" => coinflip::CMD.execute,
     "purge" => purge::CMD.execute, "clear" => purge::CMD.execute, "clr" => purge::CMD.execute,
+    "unban" => unban::CMD.execute,
 };
