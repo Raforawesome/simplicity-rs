@@ -1,6 +1,7 @@
 #![allow(unused_variables, dead_code)]
 use std::future::Future;
 use serenity::futures::TryFutureExt;
+use crate::handler::commands::utils::send_embed;
 use super::prelude::*;
 
 pub const CMD: Command = Command {
@@ -49,12 +50,23 @@ pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
 	Box::pin(execute_wrap(ctx, msg, args))
 }
 pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
-	let res = msg.channel_id.send_message(
-		ctx.http,
-		|m| {
-			m.embed(|e| {
-				e.description("Test.")
-			})
+	if args.is_empty() {
+		let _ = send_embed(HELP_MAIN, &msg, &ctx, (116, 185, 255)).await;
+		return;
+	}
+
+	match args[0].as_str() {
+		"mod" => {
+			let _ = send_embed(HELP_MOD, &msg, &ctx, (116, 185, 255)).await;
+		},
+		"util" => {
+			let _ = send_embed(HELP_UTIL, &msg, &ctx, (116, 185, 255)).await;
+		},
+		"fun" => {
+			let _ = send_embed(HELP_FUN, &msg, &ctx, (116, 185, 255)).await;
+		},
+		_ => {
+			let _ = send_embed(HELP_MAIN, &msg, &ctx, (116, 185, 255)).await;
 		}
-	).await;
+	}
 }
