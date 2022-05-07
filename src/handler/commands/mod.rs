@@ -19,6 +19,7 @@ mod eight_ball;
 mod eval;
 mod eval_support;
 mod avatar;
+mod ban;
 //////////////
 
 
@@ -34,4 +35,5 @@ pub static COMMANDS: phf::Map<&str, cmdfn> = phf_map! {
     "eval" => eval::CMD.execute,
     "evalsupport" => eval_support::CMD.execute,
     "avatar" => avatar::CMD.execute, "av" => avatar::CMD.execute, "pfp" => avatar::CMD.execute,
+    // "ban" => ban::CMD.execute,
 };

@@ -32,7 +32,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		).await;
 		return;
 	}
-	let target = utils::get_targets(
+	let target = utils::get_target(
 		&ctx,
 		msg.mentions.clone(),
 		args[0].to_owned(),

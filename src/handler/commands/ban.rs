@@ -1,12 +1,12 @@
 #![allow(unused_variables, dead_code)]
 use std::future::Future;
 use serenity::futures::TryFutureExt;
-use crate::handler::commands::utils::send_embed;
+use crate::handler::commands::utils;
 use super::prelude::*;
-use super::utils::get_target;
+use super::utils::*;
 
 pub const CMD: Command = Command {
-	command: "avatar",
+	command: "ban",
 	// aliases: &["testcmd"],
 	self_allowed: false,
 	execute
@@ -18,19 +18,21 @@ pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
 	Box::pin(execute_wrap(ctx, msg, args))
 }
 pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
-	let target = get_target(&ctx, msg.mentions.clone(), args[0].clone(), msg.guild_id)
-		.await;
+	let target = get_target_mem(
+		&ctx,
+		msg.mentions.clone(),
+		args[0].clone(),
+		msg.guild_id
+	).await;
+	let author = msg.author.clone();
 
-	if let Some(usr) = target {
-		let user = *usr;
-		let _ = msg.channel_id.send_message(
-			ctx.http,
-			|m| {
-				m.embed(|e| {
-					e.image(user.avatar_url().unwrap())
-				})
-			}
-		).await;
+	if let Some(t) = target {
+		let target = *t;
+		let reason = format!("By: {} ({})", author.name, author.id.as_u64());
+		let res = target.ban_with_reason(&ctx.http, 0, reason).await;
+		if res.is_err() {
+			let _ = send_embed("Unable to ban target!  Do I have permission?", &msg, &ctx, (255, 0, 0));
+		}
 	} else {
 		let _ = send_embed("Invalid target!", &msg, &ctx, (255, 0, 0));
 	}
