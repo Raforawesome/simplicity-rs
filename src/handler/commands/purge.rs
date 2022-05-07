@@ -48,7 +48,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 						   &msg, &ctx, (255, 0, 0)).await;
 	} else {
 		let _ = msg.delete(&ctx.http).await;
-		let m = send_embed(format!("Deleted {} messages.", count), &msg, &ctx, (0, 255, 0)).await;
+		let m = send_embed(format!("Deleted {} messages.", count), &msg, &ctx, (255, 0, 255)).await;
 		std::thread::sleep(std::time::Duration::from_secs(3));
 		let _ = m.delete(&ctx.http).await;
 	}

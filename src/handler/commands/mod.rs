@@ -23,6 +23,7 @@ mod ban;
 mod coinflip;
 mod purge;
 mod unban;
+mod help;
 //////////////
 
 
