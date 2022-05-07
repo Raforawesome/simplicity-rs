@@ -37,7 +37,7 @@ pub static COMMANDS: phf::Map<&str, Cmdfn> = phf_map! {
     "eval" => eval::CMD.execute,
     "evalsupport" => eval_support::CMD.execute,
     "avatar" => avatar::CMD.execute, "av" => avatar::CMD.execute, "pfp" => avatar::CMD.execute,
-    // "ban" => ban::CMD.execute,
+    "ban" => ban::CMD.execute,
     "coinflip" => coinflip::CMD.execute, "cf" => coinflip::CMD.execute,
     "purge" => purge::CMD.execute, "clear" => purge::CMD.execute, "clr" => purge::CMD.execute,
 };
