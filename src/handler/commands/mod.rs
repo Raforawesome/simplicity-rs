@@ -20,14 +20,15 @@ mod eval;
 mod eval_support;
 mod avatar;
 mod ban;
+mod coinflip;
 //////////////
 
 
 // type Ret = Box<dyn std::future::Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
 type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;
-type cmdfn = fn(Context, Message, Vec<String>) -> Ret;
+type Cmdfn = fn(Context, Message, Vec<String>) -> Ret;
 
-pub static COMMANDS: phf::Map<&str, cmdfn> = phf_map! {
+pub static COMMANDS: phf::Map<&str, Cmdfn> = phf_map! {
     "test" => test::CMD.execute, "testcmd" => test::CMD.execute,
     "targettest" => target_test::CMD.execute,
     "invite" => invite::CMD.execute,
@@ -36,4 +37,5 @@ pub static COMMANDS: phf::Map<&str, cmdfn> = phf_map! {
     "evalsupport" => eval_support::CMD.execute,
     "avatar" => avatar::CMD.execute, "av" => avatar::CMD.execute, "pfp" => avatar::CMD.execute,
     // "ban" => ban::CMD.execute,
+    "coinflip" => coinflip::CMD.execute, "cf" => coinflip::CMD.execute,
 };

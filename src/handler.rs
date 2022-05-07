@@ -1,7 +1,6 @@
 #![allow(dead_code)]
 mod commands;
 
-use std::ops::Index;
 use serenity::prelude::*;
 use serenity::async_trait;
 use serenity::model::{self, gateway::Ready};
