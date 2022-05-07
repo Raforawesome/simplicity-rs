@@ -31,9 +31,9 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let reason = format!("By: {} ({})", author.name, author.id.as_u64());
 		let res = target.ban_with_reason(&ctx.http, 0, reason).await;
 		if res.is_err() {
-			let _ = send_embed("Unable to ban target!  Do I have permission?", &msg, &ctx, (255, 0, 0));
+			let _ = send_embed("Unable to ban target!  Do I have permission?", &msg, &ctx, (255, 0, 0)).await;
 		}
 	} else {
-		let _ = send_embed("Invalid target!", &msg, &ctx, (255, 0, 0));
+		let _ = send_embed("Invalid target!", &msg, &ctx, (255, 0, 0)).await;
 	}
 }
