@@ -26,7 +26,8 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 - JavaScript (js, javascript, nodejs)
 - C (c, C)
 - C++ (c++, cpp)
-- Rust (Rust, rust, rs)```"#)
+- Rust (Rust, rust, rs)
+- Java (java, Java, jdk)```"#)
 					.color((255, 0, 255))
 			})
 		}
