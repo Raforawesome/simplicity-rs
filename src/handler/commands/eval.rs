@@ -214,6 +214,50 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let _ = fs::remove_file(PathBuf::from("./temp"));
 		let _ = fs::remove_file(PathBuf::from("./temp.rs"));
 
+
+	} else if mode == "java" || mode == "Java" || mode == "jdk" {
+		let mut file = fs::File::create("temp.java").unwrap();
+		let _ = file.write_all(body.as_bytes());
+
+
+		let mut m = send_embed("`Compiling...`", &msg, &ctx, (255, 255, 0)).await;
+
+		let status = process::Command::new("javac")
+			.arg("temp.java")
+			.status().unwrap();
+
+		if !status.success() {
+			let _ = m.edit(ctx.http, |m| {
+				m.embed(|e| {
+					e.description(format!("Compiler exited with error `{}`", status))
+						.color((255, 0, 0))
+				})
+			}).await;
+			return;
+		}
+
+
+		let t1 = std::time::Instant::now();
+		let output = process::Command::new("java")
+			.arg("Main")
+			.output().unwrap();
+		let stdout_bytes = output.stdout;
+		let stdout_string: String = String::from_utf8(stdout_bytes).unwrap();
+
+		let _ = m.edit(ctx.http, |m| {
+			m.embed(|e| {
+				e.description(format!("Compiled Java output:\n```\n{}\n```\nExecution took:\n```\n{:?}\n```", stdout_string, t1.elapsed()))
+					.color((0, 255, 0))
+			})
+		}).await;
+
+		let _ = process::Command::new("zsh")
+			.arg("-c")
+			.arg("mv *.class temp.class")
+			.output().unwrap();
+		let _ = fs::remove_file(PathBuf::from("./temp.class"));
+		let _ = fs::remove_file(PathBuf::from("./temp.java"));
+
 	} else {
 		send_embed("ERROR: Invalid language!", &msg, &ctx, (255, 0, 0)).await;
 	}
