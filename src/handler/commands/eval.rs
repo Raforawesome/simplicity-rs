@@ -255,7 +255,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 			.arg("-c")
 			.arg("mv *.class temp.class")
 			.output().unwrap();
-		let _ = fs::remove_file(PathBuf::from("./temp.class"));
+		let _ = fs::remove_file(PathBuf::from("./Main.class"));
 		let _ = fs::remove_file(PathBuf::from("./temp.java"));
 
 	} else {
