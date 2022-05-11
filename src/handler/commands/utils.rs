@@ -51,7 +51,7 @@ pub async fn send_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: 
 	m.unwrap()
 }
 
-pub async fn get_embed<T: ToString>(s: T, msg: &Message, ctx: &Context, color: (u8, u8, u8)) -> CreateEmbed {
+pub async fn get_embed<T: ToString>(s: T, color: (u8, u8, u8)) -> CreateEmbed {
 	let mut e = builder::CreateEmbed::default();
 	e.description(s);
 	e.color(color);

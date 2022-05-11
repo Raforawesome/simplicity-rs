@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 mod handler;
 use handler::Handler;
 use serenity::prelude::*;

@@ -1,3 +1,5 @@
 /target
 SECRET_MAIN
 .idea
+.vscode
+.DS_Store
