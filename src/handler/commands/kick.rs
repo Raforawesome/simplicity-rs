@@ -13,7 +13,7 @@ pub const CMD: Command = Command {
 };
 
 // type Ret = Box<dyn Future<Output = Result<Message, serenity::Error>> + Send + Sync>;
-type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;
+type Ret = Pin<Box<dyn Future<Output = ()> + Send>>;  // haha funny thread safety
 pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
 	Box::pin(execute_wrap(ctx, msg, args))
 }
