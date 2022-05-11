@@ -24,6 +24,7 @@ mod coinflip;
 mod purge;
 mod unban;
 mod help;
+mod kick;
 //////////////
 
 
