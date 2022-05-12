@@ -24,6 +24,7 @@ mod coinflip;
 mod purge;
 mod unban;
 mod help;
+mod kick;
 //////////////
 
 
@@ -44,4 +45,5 @@ pub static COMMANDS: phf::Map<&str, Cmdfn> = phf_map! {
     "purge" => purge::CMD.execute, "clear" => purge::CMD.execute, "clr" => purge::CMD.execute,
     "unban" => unban::CMD.execute,
     "help" => help::CMD.execute, "cmds" => help::CMD.execute, "commands" => help::CMD.execute,
+	"kick" => kick::CMD.execute,
 };
