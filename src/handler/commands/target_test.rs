@@ -1,4 +1,4 @@
-#![allow(unused_variables, dead_code)]
+#![allow(unused_variables, dead_code, unused_assignments)]
 use std::future::Future;
 use std::task::Poll;
 use serenity::futures::TryFutureExt;
