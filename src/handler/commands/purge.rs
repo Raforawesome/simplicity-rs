@@ -18,6 +18,26 @@ pub fn execute(ctx: Context, msg: Message, args: Vec<String>) -> Ret {
 	Box::pin(execute_wrap(ctx, msg, args))
 }
 pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
+	if msg.guild_id.is_none() {
+		let _ = send_embed("This command can only be used in a server!",
+		&msg,
+		&ctx,
+		(255, 0, 0));
+		return;
+	}
+
+	let gid = msg.guild_id.unwrap();
+	let author_member = gid.member(&ctx.http,
+		msg.author.id).await.unwrap();
+	if !author_member.permissions.unwrap().manage_messages() {
+		let _ = send_embed("You lack the `MANAGE_MESSAGES` permission!",
+		&msg,
+		&ctx,
+		(255, 0, 0));
+		return;
+	}
+
+
 	let c_temp = args[0].parse::<i32>();
 	let count: i32;
 	if let Ok(n) = c_temp {
