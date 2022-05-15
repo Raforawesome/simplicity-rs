@@ -32,7 +32,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 		let _ = send_embed("You lack the `BAN_MEMBERS` permission!",
 		&msg,
 		&ctx,
-		(255, 0, 0));
+		(255, 0, 0)).await;
 		return;
 	}
 
