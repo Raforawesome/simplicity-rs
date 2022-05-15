@@ -5,12 +5,15 @@ use serenity::prelude::*;
 use serenity::async_trait;
 use serenity::model::{self, gateway::Ready};
 use model::channel::Message;
+use serenity::cache::Cache;
 
 use commands::COMMANDS;
 
 const PREFIX: &str = "$";
 
-pub struct Handler;
+pub struct Handler {
+	pub cache: Cache
+}
 
 #[async_trait]
 impl EventHandler for Handler {

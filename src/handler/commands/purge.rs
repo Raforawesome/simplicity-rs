@@ -29,7 +29,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 	let gid = msg.guild_id.unwrap();
 	let author_member = gid.member(&ctx.http,
 		msg.author.id).await.unwrap();
-	if !author_member.permissions.unwrap().manage_messages() {
+	if !author_member.permissions(&ctx.cache).unwrap().manage_messages() {
 		let _ = send_embed("You lack the `MANAGE_MESSAGES` permission!",
 		&msg,
 		&ctx,

@@ -28,7 +28,7 @@ pub async fn execute_wrap(ctx: Context, msg: Message, args: Vec<String>) {
 	let gid = msg.guild_id.unwrap();
 	let author_member = gid.member(&ctx.http,
 		msg.author.id).await.unwrap();
-	if !author_member.permissions.unwrap().ban_members() {
+	if !author_member.permissions(&ctx.cache).unwrap().ban_members() {
 		let _ = send_embed("You lack the `BAN_MEMBERS` permission!",
 		&msg,
 		&ctx,
