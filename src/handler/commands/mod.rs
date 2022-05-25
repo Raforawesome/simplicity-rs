@@ -25,6 +25,7 @@ mod purge;
 mod unban;
 mod help;
 mod kick;
+mod minecraftprofile;
 //////////////
 
 
@@ -46,4 +47,5 @@ pub static COMMANDS: phf::Map<&str, Cmdfn> = phf_map! {
     "unban" => unban::CMD.execute,
     "help" => help::CMD.execute, "cmds" => help::CMD.execute, "commands" => help::CMD.execute,
 	"kick" => kick::CMD.execute,
+	"minecraftprofile" => minecraftprofile::CMD.execute, "mcp" => minecraftprofile::CMD.execute, "mcprofile" => minecraftprofile::CMD.execute,
 };
