@@ -2,6 +2,7 @@
 mod handler;
 use handler::Handler;
 use serenity::prelude::*;
+use serenity::cache::Cache;
 
 // const TOKEN: &str = "";
 
@@ -13,10 +14,10 @@ async fn main() {
     let mut Client = Client::builder(
         token,
         GatewayIntents::all()
-    ).event_handler(Handler).await.unwrap();
+    ).event_handler(Handler { cache: Cache::new() }).await.unwrap();
 
     if let Err(reason) = Client.start().await {
-        eprintln!("Bot failed to start!  Error: {reason}");
+    	eprintln!("Bot failed to start!  Error: {reason}");
     }
     // println!("Hello, world!");
 }

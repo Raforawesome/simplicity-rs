@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1.18.0", features = ['rt-multi-thread'] }
-serenity = { version = "0.11.1", default-features = false, features = ["client", "gateway", "model", "rustls_backend",
+serenity = { version = "0.11.2", default-features = false, features = ["client", "gateway", "model", "rustls_backend", "cache",
     # "builder"
 ] }
 phf = { version = "0.10.1", features = ["macros"] }
