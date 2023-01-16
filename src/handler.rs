@@ -64,14 +64,14 @@ fn similarity(s1: &str, s2: &str) -> f32 {
 
 	if s2.len() > s1.len() {
 		for (i, char) in s1.chars().enumerate() {
-			let e = &s2[i..i+1];
+			let e = &s2[i..=i];
 			if char.to_string().as_str() == e {
 				similar += 1_f32;
 			}
 		}
 	} else {
 		for (i, char) in s2.chars().enumerate() {
-			let e = &s1[i..i+1];
+			let e = &s1[i..=i];
 			if char.to_string().as_str() == e {
 				similar += 1_f32;
 			}
